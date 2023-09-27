@@ -1,0 +1,75 @@
+import speech_recognition as sr
+import pyttsx3
+import pyautogui as px
+import webbrowser as w
+import time as t
+from pynput import keyboard
+recognizer = sr.Recognizer()
+engine = pyttsx3.init()
+engine.setProperty('voice', 'english_rp+f3')
+names = []
+ages = []
+op_number = 1
+def speak_text(text):
+    if text!=None:
+        words=text.split()
+        for i in words:
+            engine.say(i)
+    engine.runAndWait()
+def on_press(key):
+    if key == keyboard.Key.esc:
+        px.press("tab")  
+        return False# stop listener
+def recognize_speech():
+    while True:
+        with sr.Microphone() as source:
+            try:
+                print("Listening...")
+                recognizer.adjust_for_ambient_noise(source) 
+                audiox = recognizer.record(source, duration = 3)
+                print("finished recording")
+                #audio = recognizer.listen(source)
+                text = recognizer.recognize_google(audiox)
+                print("Recognized:", text)
+                lower1 = text.lower()
+                if lower1!=None:
+                    return lower1
+                    break
+            except sr.UnknownValueError:
+                print("Sorry, I couldn't understand your speech.")
+#listener = keyboard.Listener(on_press=on_press)
+#w.open("/home/akiwyane/development/alpha2.html")
+t.sleep(5)
+#px.press('tab')
+speak_text('please say your name')
+x=recognize_speech()
+speak_text("your name is"+x)
+t.sleep(5)
+#px.press('tab')
+speak_text('please say your age')
+x=recognize_speech()
+speak_text("your age is"+x)
+t.sleep(5)
+#px.press('tab')
+speak_text('please say your Gender')
+x=recognize_speech()
+speak_text("your gender is"+x)
+t.sleep(5)
+#px.press('tab')
+speak_text('please say your Address')
+x=recognize_speech()
+speak_text("your address is"+x)
+t.sleep(5)
+#px.press('tab')
+speak_text('please say your height')
+x=recognize_speech()
+speak_text("your height is"+x)
+t.sleep(5)
+#px.press('tab')
+speak_text('please say your weight')
+x=recognize_speech()
+speak_text("your weight is"+x)
+t.sleep(5)
+#px.press('tab')
+#px.press('tab')
+#px.press('enter')
