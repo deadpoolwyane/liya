@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Collection Form</title>
+</head>
+<style>
+    body {
+        background-image: url(https://img.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg?w=740&t=st=1695863901~exp=1695864501~hmac=f9ddf2f835198c1a9300e66761de0e881fcfa30f06eb4bf165b7e71d6621bb03);
+        background-size: 100%;
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+        text-align: center;
+        
+    }
+    body img {
+        width: 72%;
+    margin-top: -400px;
+    margin-left: 459px;
+    }
+
+    .container {
+        max-width: 1024px;
+        max-height: 600px;
+        margin: 0 auto;
+        padding: 50px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+    .container h1 {
+        color: #fff;
+        font-size: 50px;
+        font-family: -webkit-body;
+        margin-left: -189px;
+    }
+
+    input[type="text"], input[type="number"]{
+        width: 50%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        align-items: center;
+    }
+    #dataForm {
+        text-align: end;
+        margin-left: -250px;
+        margin-right: 406px;
+    }
+    #dataForm label {
+        font-size: 30px;
+        font-family: cursive;
+        color: #fff;
+    }
+
+    input[type="submit"] {
+        width: 50%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    input[type="submit"] {
+        background-color: yellow;
+        color: #000;
+        font-weight: 700;
+        cursor: pointer;
+        border: #000 1px solid;
+    }
+    .typewriter h2 {
+    color: yellow;
+    overflow: hidden; /* Ensures the content is not revealed until the animation */
+    border-right: .15em solid white; /* The typwriter cursor */
+    white-space: nowrap; /* Keeps the content on a single line */
+    margin: 0 auto; /* Gives that scrolling effect as the typing happens */
+    letter-spacing: .15em; /* Adjust as needed */
+    animation: 
+        typing 4s steps(20, end),
+        blink-caret .75s step-end infinite;
+    font-size: 35px;    
+    
+    }
+    @keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+    }
+    @keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: white; }
+    }
+
+    .typewriter h2 span {
+        color: #fff;
+    }
+    #dataform {
+        text-align: center;
+    }
+    
+</style>
+<body>
+<div class="container">
+    <h1>Health Registration Form</h1>
+    <form id="dataForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" required><br><br>
+
+        <label for="age"> Age:</label>
+        <input type="number" id="age" required><br><br>
+
+        <label for="gender">Gender:</label>
+        <input type="text" id="gender" required><br><br>
+        
+ 
+        <input type="submit" value="Submit">
+    </form>
+    <img src="img/New Project.png" alt="image">
+    <div class="typewriter">
+        <h2>Hello <span>I'm Liya</span></h2>
+    </div>
+</div>
+</body>
+    <script>
+        document.getElementById("dataForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent form submission
+
+            // Get form data
+            const name = document.getElementById("name").value;
+            const age = document.getElementById("age").value;
+            const gender = document.getElementById("gender").value;
+            // Create data object
+            const data = {
+                name,
+                age,
+                gender,
+            };
+
+            // Send data to the server (back-end)
+            fetch("/submit", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(responseData => {
+                if (responseData.success) {
+                    alert("Data submitted successfully!");
+                    document.getElementById("dataForm").reset();
+                } else {
+                    alert("Data submission failed.");
+                }
+            });
+        });
+    </script>
+</body>
+</html>
