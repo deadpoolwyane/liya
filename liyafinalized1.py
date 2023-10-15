@@ -6,6 +6,8 @@ import pyttsx3
 import time as t
 import csv 
 import pyautogui as px
+global count
+count=0
 global final_entry
 final_entry=None
 recognizer = sr.Recognizer()
@@ -39,7 +41,8 @@ def gui():
         except KeyboardInterrupt:
             print("closing serial communication")
             communi.close()
-    def recognize_speech(output_text):
+    def recognize_speech(output_text,speakw):
+        speak_text("what is your"+str(speakw))
         with sr.Microphone() as source:
             output_text.delete(1.0, tk.END)  # Clear the Text widget
             speak_text("listening")
@@ -63,15 +66,24 @@ def gui():
         age = age_entry.get("1.0", "end-1c")
         gender = gender_entry.get("1.0", "end-1c")
         fina=final_entry.get("1.0","end-1c")
+        global count
+        count=count+1
         with open("data.csv", mode="a", newline="") as file:
             writer = csv.writer(file)
-            writer.writerow([name,age,gender,fina])
-        root.destroy()
+            writer.writerow([count,name,age,gender,fina])
+        with open('data.csv', 'r', newline='') as input_file:
+            reader = csv.reader(input_file)
+            for row in reader:
+                last_row = row[0]
+            count=last_row
+        with open("file.txt",'w') as f:
+            f.write("\n\n\n\n\n\n\n\n\nOP NO:"+str(count)+"\n"+"Name :"+str(name)+"\n"+"Age :"+str(age)+"\n"+"Gender :"+str(gender)+"\n"+"Recorded Data"+str(fina))
         # You can perform actions with the form data here
         print("Name:", name)
         print("Age:", age)
         print("Gender:", gender)
         print("The values taken by liya:",fina)
+        root.destroy()
     # Create the main application window
     root = tk.Tk()
     root.title("Sample Form")
@@ -90,7 +102,7 @@ def gui():
     name_entry = tk.Text(root, height=2, width=40)
     name_entry.pack(padx=20, pady=20)
 
-    recognize_name_button = tk.Button(root, text="Recognize Name", command=lambda: recognize_speech(name_entry),font=("Arial", 20))
+    recognize_name_button = tk.Button(root, text="Recognize Name", command=lambda: recognize_speech(name_entry,"name"),font=("Arial", 20))
     recognize_name_button.pack()
 
     age_label = tk.Label(root, text="Age:", font=("Arial", 20))
@@ -99,7 +111,7 @@ def gui():
     age_entry = tk.Text(root, height=2, width=40)
     age_entry.pack(padx=20, pady=20)
 
-    recognize_age_button = tk.Button(root, text="Recognize Age", command=lambda: recognize_speech(age_entry),font=("Arial", 20))
+    recognize_age_button = tk.Button(root, text="Recognize Age", command=lambda: recognize_speech(age_entry,"age"),font=("Arial", 20))
     recognize_age_button.pack()
 
     gender_label = tk.Label(root, text="Gender:", font=("Arial", 20))
@@ -108,7 +120,7 @@ def gui():
     gender_entry = tk.Text(root, height=2, width=40)
     gender_entry.pack(padx=20, pady=20)
 
-    recognize_gender_button = tk.Button(root, text="Recognize Gender", command=lambda: recognize_speech(gender_entry),font=("Arial", 20))
+    recognize_gender_button = tk.Button(root, text="Recognize Gender", command=lambda: recognize_speech(gender_entry,"gender"),font=("Arial", 20))
     recognize_gender_button.pack()
 
     final_label = tk.Label(root, text="Final result are", font=("Arial", 20))
@@ -117,7 +129,7 @@ def gui():
     final_entry = tk.Text(root, height=2, width=40)
     final_entry.pack(padx=20, pady=20)
 
-    collect_data_button = tk.Button(root, text="GenerateGender", command=lambda: collect_data() ,font=("Arial", 20))
+    collect_data_button = tk.Button(root, text="Generate Result", command=lambda: collect_data() ,font=("Arial", 20))
     collect_data_button.pack()
 
     submit_button = tk.Button(root, text="Submit", command=submit_form, font=("Arial", 20))
