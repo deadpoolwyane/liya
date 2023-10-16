@@ -30,7 +30,7 @@ def gui():
             px.alert(line)
             final_entry.delete(1.0, tk.END) 
             final_entry.insert(tk.END,line)
-            communi.reset_output_buffer()
+            communi.reset_intput_buffer()
         except KeyboardInterrupt:
             print("closing serial communication")
             communi.close()
