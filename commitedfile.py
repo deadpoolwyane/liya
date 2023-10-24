@@ -20,9 +20,9 @@ recognizer = sr.Recognizer()
 engine = pyttsx3.init()
 engine.setProperty('voice','english')
 line=None
-#communi = serial.Serial("/dev/ttyUSB0", 9600, timeout = 1.0)
+communi = serial.Serial("/dev/ttyUSB0", 9600, timeout = 1.0)
 t.sleep(3)
-#communi.reset_input_buffer()
+communi.reset_input_buffer()
 # Function to handle form submission
 def gui():
     def speak_text(text):
