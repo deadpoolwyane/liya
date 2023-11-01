@@ -36,12 +36,13 @@ def gui():
         line=None
         try:
             communi = serial.Serial("/dev/ttyUSB0", 9600, timeout = 1.0)
-            time.sleep
+            t.sleep(3)
             line = communi.readline().decode("utf-8")
             px.alert(line)
             final_entry.delete(1.0, tk.END) 
             final_entry.insert(tk.END,line)
-            communi.reset_intput_buffer()
+            communi.reset_input_buffer()
+            
         except KeyboardInterrupt:
             print("closing serial communication")
             communi.close()
@@ -105,7 +106,6 @@ def gui():
         x="try"
         speak_text('please say your name')
         x=recognize_speech(name_entry)
-        output_text.insert(tk.END, recognized_text)
         speak_text("your name is"+x)
         t.sleep(2)
         speak_text('please say your age')
