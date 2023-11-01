@@ -23,10 +23,6 @@ engine.setProperty('voice','english')
 line=None
 #communi = serial.Serial("/dev/ttyUSB0", 9600, timeout = 1.0)
 t.sleep(3)
-#communi.reset_input_buffer()
-# Function to handle form submission
-
-    
 def gui():
     def speak_text(text):
         engine.say(text)
@@ -41,32 +37,27 @@ def gui():
             px.alert(line)
             final_entry.delete(1.0, tk.END) 
             final_entry.insert(tk.END,line)
-            communi.reset_input_buffer()
-            
+            communi.reset_output_buffer()
         except KeyboardInterrupt:
             print("closing serial communication")
             communi.close()
     def recognize_speech(output_text):
         with sr.Microphone() as source:
-            output_text.delete(1.0, tk.END)  # Clear the Text widget
+            # Clear the Text widget
             speak_text("listening")
             audio = recognizer.record(source,duration=4)
-            speak_text("Finished Recording")
-            output_text.delete(1.0, tk.END)  # Clear the "Listening..." message
+            speak_text("Finished Recording")  # Clear the "Listening..." message
             try:
                 recognized_text = recognizer.recognize_google(audio)
                 if recognized_text in 'mail':
                     recognized_text="male"
-                    output_text.insert(tk.END, recognized_text)
                     return recognized_text
                 else:
-                    output_text.insert(tk.END, recognized_text)
                     return recognized_text 
             except sr.UnknownValueError:
                 speak_text("Google Web Speech Recognition could not understand audio.")
-                output_text.insert(tk.END, "Google Web Speech Recognition could not understand audio.")
             except sr.RequestError as e:
-                output_text.insert(tk.END, f"Could not request results from Google Web Speech Recognition service; {e}")
+                speak_text(tk.END, f"Could not request results from Google Web Speech Recognition service; {e}")
 
     def submit_form():
         name = name_entry.get("1.0", "end-1c")  # Get the text from the Text widget
@@ -105,15 +96,20 @@ def gui():
         t.sleep(2)
         x="try"
         speak_text('please say your name')
-        x=recognize_speech(name_entry)
+        x=recognize_speech()
+        name_entry.delete(1.0, tk.END)
+        name_entry_text.insert(tk.END, x)
         speak_text("your name is"+x)
         t.sleep(2)
         speak_text('please say your age')
         x=recognize_speech(age_entry)
+        age_entry.delete(1.0, tk.END)
+        age_entry_text.insert(tk.END, x)
         speak_text("your age is"+x)
-        t.sleep(2)
         speak_text('please say your Gender')    
         x=recognize_speech(gender_entry)
+        gender_entry.delete(1.0, tk.END)
+        gender_entry_text.insert(tk.END, x)
         speak_text("your gender is"+x)
     root = tk.Tk()
     root.title("Sample Form")
